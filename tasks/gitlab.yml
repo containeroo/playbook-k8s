@@ -1,0 +1,76 @@
+---
+- name: Create gitlab email credentials secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'gitlab/gitlab-mail-password-secret.yaml') }}"
+  when: gitlab_mail_enabled
+
+- name: Create gitlab sso secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'gitlab/gitlab-saml-sso-secret.yaml') }}"
+  when: gitlab_sso_enabled
+
+- name: Install helm chart gitlab
+  helm:
+    name: gitlab
+    chart_ref: gitlab/gitlab
+    chart_version: 4.2.2
+    release_namespace: "{{ gitlab_namespace }}"
+    values: "{{ lookup('template', 'gitlab/gitlab-values.yaml') | from_yaml }}"
+
+- name: Create gitlab ingressroutes
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
+  with_items:
+    - name: gitlab-webservice
+      namespace: "{{ gitlab_namespace }}"
+      routes:
+        - rule: Host(`{{ gitlab_hostname }}`)
+          services:
+            - name: gitlab-webservice
+              port: 8181
+        - rule: Host(`{{ gitlab_hostname }}`) && Path(`/admin/sidekiq`)
+          services:
+            - name: gitlab-webservice
+              port: 8080
+    - name: gitlab-minio
+      namespace: "{{ gitlab_namespace }}"
+      routes:
+        - rule: Host(`{{ gitlab_minio_hostname }}`)
+          services:
+            - name: gitlab-minio-svc
+              port: 9000
+    - name: gitlab-registry
+      namespace: "{{ gitlab_namespace }}"
+      routes:
+        - rule: Host(`{{ gitlab_registry_hostname }}`)
+          services:
+            - name: gitlab-registry
+              port: 5000
+
+- name: Ensure gitlab ssh ingressroutetcp is {{ 'present' if gitlab_ssh_enabled else 'absent' }}
+  k8s:
+    state: "{{ 'present' if gitlab_ssh_enabled else 'absent' }}"
+    definition: "{{ lookup('template', 'traefik/traefik-ingressroutetcp.yaml') }}"
+  with_items:
+    - name: gitlab-ssh
+      namespace: "{{ gitlab_namespace }}"
+      entrypoints:
+        - gitlab-ssh
+      routes:
+        - rule: HostSNI(`*`)
+          services:
+            - name: gitlab-gitlab-shell
+              port: 22
+  when: gitlab_ssh_enabled is defined
+
+- name: Install helm chart gitlab-runner
+  helm:
+    name: gitlab-runner
+    chart_ref: gitlab/gitlab-runner
+    chart_version: 0.19.1
+    release_namespace: "{{ gitlab_namespace }}"
+    values: "{{ lookup('template', 'gitlab/gitlab-runner-values.yaml') | from_yaml }}"
+  when: gitlab_runner_enabled

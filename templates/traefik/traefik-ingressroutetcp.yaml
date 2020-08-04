@@ -1,0 +1,27 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: {{ item.name }}
+  namespace: {{ item.namespace }}
+spec:
+  entryPoints:
+{% for entrypoint in item.entrypoints %}
+    - {{ entrypoint }}
+{% endfor %}
+  routes:
+{% for route in item.routes %}
+    - kind: Rule
+      match: {{ route.rule }}
+{% if route.middlewares is defined %}
+      middlewares:
+{% for middleware in route.middlewares %}
+        - name: {{ middleware.name }}
+          namespace: {{ middleware.namespace }}
+{% endfor %}
+{% endif %}
+      services:
+{% for service in route.services %}
+        - name: {{ service.name }}
+          port: {{ service.port }}
+{% endfor %}
+{% endfor %}

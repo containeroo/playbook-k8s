@@ -1,0 +1,96 @@
+---
+- hosts: prod
+  gather_facts: false
+  collections:
+    - community.kubernetes
+  vars_files:
+    - vars/main.yml
+    - vars/secrets.yml
+  pre_tasks:
+    - name: Update pip
+      pip:
+        name: pip
+        state: latest
+        extra_args: --no-warn-script-location -q
+    - name: Install required python libraries
+      pip:
+        name: ['pyhelm', 'kubernetes', 'openshift']
+        state: present
+    - name: Add helm chart repos
+      helm_repository:
+        name: "{{ item.name }}"
+        repo_url: "{{ item.url }}"
+      with_items:
+        - name: appuio
+          url: https://charts.appuio.ch
+        - name: argo
+          url: https://argoproj.github.io/argo-helm
+        - name: gitlab
+          url: https://charts.gitlab.io
+        - name: appscode
+          url: https://charts.appscode.com/stable
+        - name: kubernetes-dashboard
+          url: https://kubernetes.github.io/dashboard
+        - name: minio
+          url: https://helm.min.io
+        - name: stable
+          url: https://kubernetes-charts.storage.googleapis.com
+        - name: traefik
+          url: https://containous.github.io/traefik-helm-chart
+      tags:
+        - always
+    - name: Update all Helm repositories
+      command: helm repo update
+      changed_when: false
+      failed_when: false
+      tags:
+        - always
+    - name: Create namespaces
+      k8s:
+        name: "{{ lookup('vars', item) }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+      with_items: "{{ lookup('varnames', '^.*_namespace$').split(',') }}"
+      tags:
+        - always
+  tasks:
+    - import_tasks: tasks/metallb.yml
+      tags:
+        - metallb
+    - import_tasks: tasks/local-path-provisioner.yml
+      tags:
+        - local-path-provisioner
+    - import_tasks: tasks/nfs-client-provisioner.yml
+      tags:
+        - nfs-client-provisioner
+    - import_tasks: tasks/traefik.yml
+      tags:
+        - traefik
+    - import_tasks: tasks/kubernetes-dashboard.yml
+      tags:
+        - kubernetes-dashboard
+    - import_tasks: tasks/minio-backup.yml
+      tags:
+        - minio-backup
+    - import_tasks: tasks/prometheus-operator.yml
+      tags:
+        - prometheus-operator
+    - import_tasks: tasks/kubedb.yml
+      tags:
+        - kubedb
+    - import_tasks: tasks/k8up.yml
+      tags:
+        - k8up
+    - import_tasks: tasks/gitlab.yml
+      tags:
+        - gitlab
+    - import_tasks: tasks/argocd.yml
+      tags:
+        - argocd
+  handlers:
+    - name: restart traefik
+      command: "kubectl rollout restart -n {{ traefik_namespace }} deployments.apps traefik"
+      become: true
+    - name: kubernetes dashboard token
+      include_tasks: tasks/kubernetes-dashboard-token.yml

@@ -1,0 +1,20 @@
+---
+- name: Kubernetes dashboard token
+  block:
+    - name: Get Kubernetes secrets
+      command: kubectl --namespace {{ kubernetes_dashboard_namespace }} get secrets
+      become: true
+      failed_when: false
+      changed_when: false
+      register: k8s_secrets
+    - name: Get Kubernetes dashboard token
+      command: |
+        kubectl --namespace {{ kubernetes_dashboard_namespace }} get secrets {{ k8s_secrets.stdout | regex_search('admin-user-token-[a-zA-Z0-9]{5}') }}
+        -ojsonpath='{.data.token}'
+      register: dashboard_token
+      become: true
+      failed_when: false
+      changed_when: false
+    - name: Kubernetes dashboard token
+      debug:
+        msg: "{{ dashboard_token.stdout | b64decode }}"

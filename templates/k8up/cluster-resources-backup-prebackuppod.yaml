@@ -1,0 +1,18 @@
+apiVersion: backup.appuio.ch/v1alpha1
+kind: PreBackupPod
+metadata:
+  name: cluster-resources-backup
+  namespace: {{ k8up_namespace }}
+spec:
+  backupCommand: /app/k8s-pre-backup -s
+  fileExtension: .tgz
+  pod:
+    spec:
+      containers:
+      - command:
+        - sleep
+        - "3600"
+        image: docker.io/vshn/k8s-object-backup:v0.0.2
+        imagePullPolicy: IfNotPresent
+        name: cluster-resources-backup
+      serviceAccountName: cluster-resources-backup

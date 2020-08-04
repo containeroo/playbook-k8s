@@ -1,0 +1,19 @@
+apiVersion: backup.appuio.ch/v1alpha1
+kind: Schedule
+metadata:
+  name: cluster-resources-backup
+  namespace: {{ k8up_namespace }}
+spec:
+  backend:
+    s3:
+      bucket: cluster-resources
+  backup:
+    keepJobs: 1
+    schedule: '{{ cluster_resources_backup_schedule }}'
+  check:
+    schedule: 30 3 * * *
+  prune:
+    retention:
+      keepDaily: 2
+      keepLast: 10
+    schedule: '{{ cluster_resources_backup_prune_schedule }}'

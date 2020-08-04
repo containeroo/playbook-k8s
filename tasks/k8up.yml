@@ -1,0 +1,42 @@
+---
+- name: Install helm chart k8up
+  helm:
+    name: k8up
+    chart_ref: appuio/k8up
+    chart_version: 0.6.1
+    release_namespace: "{{ k8up_namespace }}"
+    values: "{{ lookup('template', 'k8up/k8up-values.yaml') | from_yaml }}"
+
+- name: Ensure k8up crds exist
+  command: "kubectl get crd"
+  register: k8up_crds
+  until: "k8up_crds.stdout | regex_findall('.*backup.appuio.ch') | length == 7"
+  retries: 10
+  delay: 10
+  changed_when: false
+  become: true
+
+- name: Create k8up cluster resources backup serviceaccount
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'k8up/cluster-resources-backup-serviceaccount.yaml') }}"
+
+- name: Create k8up cluster resources backup clusterrole
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'k8up/cluster-resources-backup-cluster-reader-clusterrole.yaml') }}"
+
+- name: Create k8up cluster resources backup clusterrolebinding
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'k8up/cluster-resources-backup-cluster-reader-clusterrolebinding.yaml') }}"
+
+- name: Create k8up cluster resources backup schedule
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'k8up/cluster-resources-backup-schedule.yaml') }}"
+
+- name: Create k8up cluster resources backup prebackuppod
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'k8up/cluster-resources-backup-prebackuppod.yaml') }}"

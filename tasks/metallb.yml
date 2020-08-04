@@ -1,0 +1,8 @@
+---
+- name: Install helm chart metallb
+  helm:
+    name: metallb
+    chart_ref: stable/metallb
+    chart_version: 0.12.0
+    release_namespace: "{{ metallb_namespace }}"
+    values: "{{ lookup('template', 'metallb/metallb-values.yaml') | from_yaml }}"

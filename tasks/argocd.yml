@@ -1,0 +1,30 @@
+---
+- name: Install helm chart argocd
+  helm:
+    name: argocd
+    chart_ref: argo/argo-cd
+    chart_version: 2.5.4
+    release_namespace: "{{ argocd_namespace }}"
+    values: "{{ lookup('template', 'argocd/argocd-values.yaml') | from_yaml }}"
+
+- name: Ensure argocd crds exist
+  command: "kubectl get crd"
+  register: argocd_crds
+  until: "argocd_crds.stdout | regex_findall('.*argoproj.io') | length == 2"
+  retries: 10
+  delay: 10
+  changed_when: false
+  become: true
+
+- name: Create argocd ingressroute
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
+  with_items:
+    - name: argocd-server
+      namespace: "{{ argocd_namespace }}"
+      routes:
+        - rule: Host(`{{ argocd_hostname }}`)
+          services:
+            - name: argocd-server
+              port: 80

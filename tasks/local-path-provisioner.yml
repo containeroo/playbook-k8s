@@ -1,0 +1,22 @@
+---
+- name: Clone local-path-provisioner git repo
+  git:
+    repo: https://github.com/rancher/local-path-provisioner
+    dest: /tmp/local-path-provisioner
+
+- name: Ensure local-path-provisioner directories exist
+  file:
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    state: directory
+  become: true
+  with_items: "{{ local_path_provisioner_data_paths }}"
+
+- name: Install helm charts local-path-provisioner
+  helm:
+    name: "{{ item.name }}"
+    chart_ref: /tmp/local-path-provisioner/deploy/chart
+    release_namespace: "{{ local_path_provisioner_namespace }}"
+    values: "{{ lookup('template', 'local-path-provisioner/local-path-provisioner-values.yaml') | from_yaml }}"
+  with_items: "{{ local_path_provisioner_data_paths }}"

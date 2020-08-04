@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-config
+  namespace: {{ traefik_namespace }}
+data:
+  traefik-config.yaml: |
+    http:
+{% if traefik_routers is not none %}
+      routers:
+{% for router in traefik_routers %}
+        {{ router.name }}:
+          entryPoints:
+{% for entrypoint in router.entrypoints %}
+            - {{ entrypoint }}
+{% endfor %}
+          rule: "{{ router.rule }}"
+{% if router.middlewares is defined %}
+          middlewares:
+{% for middleware in router.middlewares %}
+            - {{ middleware }}
+{% endfor %}
+{% endif %}
+          service: {{ router.service }}
+{% endfor %}
+{% endif %}
+{% if traefik_middlewares is not none %}
+      middlewares:
+{% for middleware in traefik_middlewares %}
+        {{ middleware.name }}:
+          {{ middleware.spec | indent(10) }}
+{% endfor %}
+{% endif %}
+{% if traefik_services is not none %}
+      services:
+{% for service in traefik_services %}
+        {{ service.name }}:
+          loadBalancer:
+            servers:
+{% for server in service.servers %}
+              - url: "{{ server }}"
+{% endfor %}
+            passHostHeader: true
+{% endfor %}
+{% endif %}

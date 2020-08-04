@@ -1,0 +1,23 @@
+---
+- name: Install helm chart kubedb-operator
+  helm:
+    name: kubedb-operator
+    chart_ref: appscode/kubedb
+    release_namespace: "{{ kubedb_namespace }}"
+    chart_version: v0.13.0-rc.0
+
+- name: Ensure kubedb crds exist
+  command: "kubectl get crd"
+  register: kubedb_crds
+  until: "kubedb_crds.stdout | regex_findall('.*kubedb.com') | length == 16"
+  retries: 10
+  delay: 10
+  changed_when: false
+  become: true
+
+- name: Install helm chart kubedb-catalog
+  helm:
+    name: kubedb-catalog
+    chart_ref: appscode/kubedb-catalog
+    release_namespace: "{{ kubedb_namespace }}"
+    chart_version: v0.13.0-rc.0

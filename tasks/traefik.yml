@@ -1,0 +1,34 @@
+---
+- name: Create traefik cloudflare api secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'traefik/cloudflare-api-credentials-secret.yaml') }}"
+  notify: restart traefik
+
+- name: Create traefik configmap
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'traefik/traefik-config-configmap.yaml') }}"
+  notify: restart traefik
+
+- name: Install helm chart traefik
+  helm:
+    name: traefik
+    chart_ref: traefik/traefik
+    chart_version: 8.9.1
+    release_namespace: "{{ traefik_namespace }}"
+    values: "{{ lookup('template', 'traefik/traefik-values.yaml') | from_yaml }}"
+
+- name: Ensure traefik crds exist
+  command: "kubectl get crd"
+  register: traefik_crds
+  until: "traefik_crds.stdout | regex_findall('.*traefik.containo.us') | length == 7"
+  retries: 10
+  delay: 10
+  changed_when: false
+  become: true
+
+- name: Create traefik dashboard ingressroute
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'traefik/traefik-dashboard-ingressroute.yaml') }}"

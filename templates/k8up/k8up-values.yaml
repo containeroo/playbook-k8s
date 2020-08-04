@@ -1,0 +1,22 @@
+k8up:
+  envVars:
+    - name: BACKUP_GLOBALREPOPASSWORD
+      value: {{ restic_password }}
+    - name: BACKUP_GLOBALACCESSKEYID
+      value: {{ accesskey }}
+    - name: BACKUP_GLOBALSECRETACCESSKEY
+      value: {{ secretkey }}
+    - name: BACKUP_GLOBALS3ENDPOINT
+      value: https://{{ minio_backup_hostname }}
+metrics:
+  serviceMonitor:
+    enabled: true
+    namespace: {{ prometheus_operator_namespace }}
+    additionalLabels:
+      release: prometheus-operator
+  prometheusRule:
+    enabled: true
+    namespace: {{ prometheus_operator_namespace }}
+    additionalLabels:
+      app: prometheus-operator
+      release: prometheus-operator

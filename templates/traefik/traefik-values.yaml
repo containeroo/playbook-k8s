@@ -1,0 +1,49 @@
+{% if additional_arguments is not none %}
+additionalArguments:
+{% for arg in additional_arguments %}
+  - {{ arg }}
+{% endfor %}
+{% endif %}
+{% if additional_entrypoints is not none or gitlab_ssh_enabled %}
+ports:
+{% if additional_entrypoints is not none %}
+{% for ep in additional_entrypoints %}
+  {{ ep.name }}:
+    port: {{ ep.port }}
+    expose: {{ ep.exposed }}
+    exposedPort: {{ ep.exposed_port }}
+    protocol: {{ ep.protocol }}
+{% endfor %}
+{% endif %}
+{% if gitlab_ssh_enabled %}
+  gitlab-ssh:
+    port: 2222
+    expose: true
+    exposedPort: 22
+    protocol: TCP
+{% endif %}
+{% endif %}
+env:
+  - name: CF_API_EMAIL
+    valueFrom:
+      secretKeyRef:
+        key: email
+        name: cloudflare-api-credentials
+  - name: CF_API_KEY
+    valueFrom:
+      secretKeyRef:
+        key: apiKey
+        name: cloudflare-api-credentials
+ingressRoute:
+  dashboard:
+    enabled: false
+persistence:
+  accessMode: ReadWriteOnce
+  annotations: {}
+  enabled: true
+  path: /certs
+  size: 128Mi
+volumes:
+  - mountPath: /data
+    name: traefik-config
+    type: configMap

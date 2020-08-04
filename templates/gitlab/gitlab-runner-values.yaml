@@ -1,0 +1,11 @@
+gitlabUrl: https://{{ gitlab_hostname }}/
+runnerRegistrationToken: "{{ gitlab_runner_token }}"
+metrics:
+  enabled: false
+runners:
+  image: alpine:latest
+  locked: false
+  runUntagged: true
+  protected: false
+rbac:
+  create: true
