@@ -15,7 +15,7 @@
   helm:
     name: gitlab
     chart_ref: gitlab/gitlab
-    chart_version: 4.2.2
+    chart_version: 4.2.3
     release_namespace: "{{ gitlab_namespace }}"
     values: "{{ lookup('template', 'gitlab/gitlab-values.yaml') | from_yaml }}"
 
@@ -70,7 +70,7 @@
   helm:
     name: gitlab-runner
     chart_ref: gitlab/gitlab-runner
-    chart_version: 0.19.1
+    chart_version: 0.19.2
     release_namespace: "{{ gitlab_namespace }}"
     values: "{{ lookup('template', 'gitlab/gitlab-runner-values.yaml') | from_yaml }}"
   when: gitlab_runner_enabled

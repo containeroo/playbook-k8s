@@ -29,9 +29,9 @@ controller:
             severity: warning
           annotations:
 {% raw %}
-            summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
+            summary: "`{{ $labels.name }}` Application not synchronized"
             description: >
-              The application [{{`{{$labels.name}}`}} has not been synchronized for over
+              The application `{{ $labels.name }}` has not been synchronized for over
 {% endraw %}
               12 hours which means that the state of this cloud has drifted away from the
               state inside Git.
@@ -42,9 +42,9 @@ controller:
             severity: critical
           annotations:
 {% raw %}
-            summary: "[{{`{{$labels.name}}`}}] Application not healthy"
+            summary: "`{{ $labels.name }}` Application not healthy"
             description: >
-              The application [{{`{{$labels.name}}`}} is not healthy.
+              The application `{{ $labels.name }}` is not healthy.
 {% endraw %}
       namespace: {{ prometheus_operator_namespace }}
       additionalLabels:

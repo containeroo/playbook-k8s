@@ -8,7 +8,7 @@
   helm:
     name: minio-backup
     chart_ref: minio/minio
-    chart_version: 5.0.32
+    chart_version: 6.0.2
     release_namespace: "{{ minio_backup_namespace }}"
     values: "{{ lookup('template', 'minio-backup/minio-backup-values.yaml') | from_yaml }}"
 

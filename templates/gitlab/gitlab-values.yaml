@@ -1,6 +1,8 @@
 certmanager:
   install: false
 gitlab:
+  gitlab-exporter:
+    enabled: false
   gitlab-shell:
     maxReplicas: 1
     minReplicas: 1

@@ -1,4 +1,6 @@
 k8up:
+  backupImage:
+    tag: v0.1.9
   envVars:
     - name: BACKUP_GLOBALREPOPASSWORD
       value: {{ restic_password }}

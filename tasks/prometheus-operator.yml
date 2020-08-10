@@ -3,7 +3,7 @@
   helm:
     name: prometheus-operator
     chart_ref: stable/prometheus-operator
-    chart_version: 9.3.0
+    chart_version: 9.3.1
     release_namespace: "{{ prometheus_operator_namespace }}"
     values: "{{ lookup('template', 'prometheus-operator/prometheus-operator-values.yaml') | from_yaml }}"
 
