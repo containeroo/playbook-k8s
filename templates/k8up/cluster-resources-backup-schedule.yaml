@@ -8,12 +8,11 @@ spec:
     s3:
       bucket: cluster-resources
   backup:
-    keepJobs: 1
-    schedule: '{{ cluster_resources_backup_schedule }}'
+    schedule: "{{ cluster_resources_backup_schedule }}"
   check:
-    schedule: 30 3 * * *
+    schedule: "{{ cluster_resources_backup_check_schedule }}"
   prune:
     retention:
-      keepDaily: 2
-      keepLast: 10
-    schedule: '{{ cluster_resources_backup_prune_schedule }}'
+      keepDaily: {{ cluster_resources_backup_keep_daily }}
+      keepLast: {{ cluster_resources_backup_keep_last }}
+    schedule: "{{ cluster_resources_backup_prune_schedule }}"

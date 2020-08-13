@@ -11,6 +11,7 @@ metallb_address_pool: 192.168.1.210-192.168.1.220
 
 # local-path-provisioner
 local_path_provisioner_namespace: local-path-provisioner
+local_path_provisioner_version: v0.0.17
 local_path_provisioner_data_paths:
   - name: nvme
     path: /mnt/disk04/data
@@ -100,8 +101,21 @@ grafana_sso_name: example.com SSO
 grafana_sso_client_id: grafana
 grafana_sso_idp_url: https://{{ keycloak_hostname }}/auth/realms/{{ keycloak_realm }}/protocol/openid-connect
 
+# prometheus-pushgateway
+prometheus_pushgateway_namespace: monitoring
+prometheus_pushgateway_hostname: pushgateway.local.{{ base_domain }}
+
 # kubedb
 kubedb_namespace: kubedb
+
+# k8up
+k8up_namespace: k8up
+k8up_keep_jobs: 3
+cluster_resources_backup_schedule: "0 */12 * * *"
+cluster_resources_backup_check_schedule: "30 3 * * *"
+cluster_resources_backup_prune_schedule: "10 */12 * * *"
+cluster_resources_backup_keep_daily: 2
+cluster_resources_backup_keep_last: 10
 
 # gitlab
 gitlab_namespace: gitlab
@@ -133,8 +147,3 @@ argocd_sso_enabled: true
 argocd_sso_name: example.com SSO
 argocd_sso_idp_url: https://{{ keycloak_hostname }}/auth/realms/{{ keycloak_realm }}
 argocd_sso_client_id: argocd
-
-# k8up
-k8up_namespace: k8up
-cluster_resources_backup_schedule: "0 */12 * * *"
-cluster_resources_backup_prune_schedule: "10 */12 * * *"

@@ -25,6 +25,8 @@
           url: https://charts.appuio.ch
         - name: argo
           url: https://argoproj.github.io/argo-helm
+        - name: bitnami
+          url: https://charts.bitnami.com/bitnami
         - name: gitlab
           url: https://charts.gitlab.io
         - name: appscode
@@ -76,6 +78,9 @@
     - import_tasks: tasks/prometheus-operator.yml
       tags:
         - prometheus-operator
+    - import_tasks: tasks/prometheus-pushgateway.yml
+      tags:
+        - prometheus-pushgateway
     - import_tasks: tasks/kubedb.yml
       tags:
         - kubedb

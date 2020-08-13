@@ -5,3 +5,10 @@ nodePathMap:
 storageClass:
   defaultClass: {{ item.defaultClass }}
   name: {{ item.name }}
+configmap:
+  name: {{ item.name }}-local-path-provisioner
+  teardown: |-
+    #!/bin/sh
+    path=$1
+    archived_path="$(dirname ${path})/archived-$(basename ${path})"
+    mv ${path} ${archived_path}

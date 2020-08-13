@@ -10,15 +10,18 @@ k8up:
       value: {{ secretkey }}
     - name: BACKUP_GLOBALS3ENDPOINT
       value: https://{{ minio_backup_hostname }}
+    - name: BACKUP_GLOBALKEEPJOBS
+      value: "{{ k8up_keep_jobs }}"
+    - name: BACKUP_PROMURL
+      value: https://{{ prometheus_pushgateway_hostname }}
 metrics:
   serviceMonitor:
     enabled: true
     namespace: {{ prometheus_operator_namespace }}
     additionalLabels:
-      release: prometheus-operator
+      prometheus: default
   prometheusRule:
     enabled: true
     namespace: {{ prometheus_operator_namespace }}
     additionalLabels:
-      app: prometheus-operator
-      release: prometheus-operator
+      prometheus: default

@@ -5,7 +5,7 @@ controller:
       enabled: true
       namespace: {{ prometheus_operator_namespace }}
       additionalLabels:
-        release: prometheus-operator
+        prometheus: default
     rules:
       enabled: true
       spec:
@@ -48,8 +48,7 @@ controller:
 {% endraw %}
       namespace: {{ prometheus_operator_namespace }}
       additionalLabels:
-        app: prometheus-operator
-        release: prometheus-operator
+        prometheus: default
 server:
   config:
 {% if argocd_sso_enabled %}

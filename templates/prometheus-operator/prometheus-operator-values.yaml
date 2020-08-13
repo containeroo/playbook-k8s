@@ -57,6 +57,15 @@ nodeExporter:
 prometheus:
   serviceMonitor:
     selfMonitor: false
+  prometheusSpec:
+    ruleSelectorNilUsesHelmValues: false
+    ruleSelector:
+      matchLabels:
+        prometheus: default
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector:
+      matchLabels:
+        prometheus: default
 prometheusOperator:
   serviceMonitor:
     selfMonitor: false

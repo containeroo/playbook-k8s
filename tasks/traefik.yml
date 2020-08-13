@@ -15,7 +15,7 @@
   helm:
     name: traefik
     chart_ref: traefik/traefik
-    chart_version: 8.9.1
+    chart_version: 8.11.0
     release_namespace: "{{ traefik_namespace }}"
     values: "{{ lookup('template', 'traefik/traefik-values.yaml') | from_yaml }}"
 

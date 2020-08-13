@@ -3,6 +3,6 @@
   helm:
     name: backup
     chart_ref: stable/nfs-client-provisioner
-    chart_version: 1.2.8
+    chart_version: 1.2.9
     release_namespace: "{{ nfs_client_provisioner_namespace }}"
     values: "{{ lookup('template', 'nfs-client-provisioner/nfs-client-provisioner-values.yaml') | from_yaml }}"

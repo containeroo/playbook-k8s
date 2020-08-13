@@ -2,6 +2,7 @@
 - name: Clone local-path-provisioner git repo
   git:
     repo: https://github.com/rancher/local-path-provisioner
+    version: "{{ local_path_provisioner_version }}"
     dest: /tmp/local-path-provisioner
 
 - name: Ensure local-path-provisioner directories exist
