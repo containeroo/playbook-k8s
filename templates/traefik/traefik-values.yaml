@@ -4,8 +4,9 @@ additionalArguments:
   - {{ arg }}
 {% endfor %}
 {% endif %}
-{% if additional_entrypoints is not none or gitlab_ssh_enabled %}
 ports:
+  web:
+    redirectTo: websecure
 {% if additional_entrypoints is not none %}
 {% for ep in additional_entrypoints %}
   {{ ep.name }}:
@@ -21,7 +22,6 @@ ports:
     expose: true
     exposedPort: 22
     protocol: TCP
-{% endif %}
 {% endif %}
 env:
   - name: CF_API_EMAIL
