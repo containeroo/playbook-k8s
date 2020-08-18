@@ -38,9 +38,8 @@ ingressRoute:
   dashboard:
     enabled: false
 persistence:
-  accessMode: ReadWriteOnce
-  annotations: {}
   enabled: true
+  storageClass: {{ traefik_storageclass }}
   path: /certs
   size: 128Mi
 volumes:

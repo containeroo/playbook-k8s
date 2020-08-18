@@ -27,6 +27,7 @@ nfs_path: /volume1/k8s-backup
 
 # traefik
 traefik_namespace: traefik
+traefik_storageclass: nvme
 traefik_dashboard_hostname: traefik.local.{{ base_domain }}
 cf_api_email: "{{ mail_address }}"
 cert_domain: "{{ base_domain }}"
@@ -35,8 +36,6 @@ acme_email: "{{ mail_address }}"
 additional_arguments:
   - --serverstransport.insecureskipverify
   - --providers.file.filename=/data/traefik-config.yaml
-  - --entrypoints.web.http.redirections.entrypoint.to=:443
-  - --entrypoints.web.http.redirections.entrypoint.permanent=true
   - --entrypoints.websecure.http.tls.certresolver=cloudflare
   - --entrypoints.websecure.http.tls.domains[0].main={{ cert_domain }}
   - --entrypoints.websecure.http.tls.domains[0].sans={{ cert_sans }}
@@ -91,10 +90,10 @@ buckets:
 # prometheus-operator
 prometheus_operator_namespace: monitoring
 alertmanager_hostname: alertmanager.local.{{ base_domain }}
-grafana_hostname: grafana.local.{{ base_domain }}
-prometheus_hostname: prometheus.local.{{ base_domain }}
-cluster_monitoring_enabled: false
 slack_channel: "#kubernetes"
+prometheus_hostname: prometheus.local.{{ base_domain }}
+prometheus_storageclass: nvme
+grafana_hostname: grafana.local.{{ base_domain }}
 grafana_sso_enabled: true
 grafana_storageclass: nvme
 grafana_sso_name: example.com SSO
@@ -104,6 +103,7 @@ grafana_sso_idp_url: https://{{ keycloak_hostname }}/auth/realms/{{ keycloak_rea
 # prometheus-pushgateway
 prometheus_pushgateway_namespace: monitoring
 prometheus_pushgateway_hostname: pushgateway.local.{{ base_domain }}
+prometheus_pushgateway_storageclass: nvme
 
 # kubedb
 kubedb_namespace: kubedb

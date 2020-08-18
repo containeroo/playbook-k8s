@@ -31,7 +31,6 @@ alertmanager:
         - match:
             severity: critical
           receiver: slack
-{% if not cluster_monitoring_enabled %}
   serviceMonitor:
     selfMonitor: false
 coreDns:
@@ -58,6 +57,15 @@ prometheus:
   serviceMonitor:
     selfMonitor: false
   prometheusSpec:
+    storageSpec:
+     volumeClaimTemplate:
+       spec:
+         storageClassName: {{ prometheus_storageclass }}
+         accessModes:
+           - "ReadWriteOnce"
+         resources:
+           requests:
+             storage: 50Gi
     ruleSelectorNilUsesHelmValues: false
     ruleSelector:
       matchLabels:
@@ -69,13 +77,10 @@ prometheus:
 prometheusOperator:
   serviceMonitor:
     selfMonitor: false
-{% endif %}
 grafana:
-{% if not cluster_monitoring_enabled %}
   serviceMonitor:
     selfMonitor: false
   defaultDashboardsEnabled: false
-{% endif %}
   enabled: true
   persistence:
     enabled: true

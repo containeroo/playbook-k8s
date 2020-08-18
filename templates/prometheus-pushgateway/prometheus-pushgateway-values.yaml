@@ -3,3 +3,6 @@ serviceMonitor:
   namespace: {{ prometheus_operator_namespace }}
   additionalLabels:
     prometheus: default
+persistentVolume:
+  enabled: true
+  storageClass: {{ prometheus_pushgateway_storageclass }}
