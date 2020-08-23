@@ -28,9 +28,7 @@ alertmanager:
       receiver: slack
       repeat_interval: 12h
       routes:
-        - match:
-            severity: critical
-          receiver: slack
+        - receiver: slack
   serviceMonitor:
     selfMonitor: false
 coreDns:
