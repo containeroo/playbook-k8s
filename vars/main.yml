@@ -83,7 +83,6 @@ backup_minio_namespace: backup-minio
 backup_minio_hostname: backups.local.{{ base_domain }}
 backup_minio_accesskey: admin
 backup_minio_buckets:
-  - gitlab
 
 # prometheus-operator
 prometheus_operator_namespace: monitoring
