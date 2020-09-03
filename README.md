@@ -35,12 +35,11 @@ ansible-vault decrypt vars/secrets.yml
 # traefik
 cf_api_key: # API Key for Cloudflare
 
-# minio-backup
-secretkey: # Minio secret key
+# backup minio
+backup_minio_secretkey: # Minio secret key
 
 # prometheus-operator
 slack_url: https://hooks.slack.com/services/ # Slack url for alertmanager notifications
-grafana_sso_client_secret: # Keycloak OIDC client secret for grafana
 
 # gitlab
 gitlab_runner_token: # GitLab Runner token
@@ -54,7 +53,7 @@ argocd_repo_password: # Password for Argo CD deployment repo
 argocd_sso_client_secret: # Keycloak OIDC client secret for argocd
 
 # k8up
-restic_password: # Password for restic repository
+k8up_restic_password: # Password for restic repository
 ```
 
 ### Other Variables

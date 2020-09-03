@@ -3,13 +3,13 @@ k8up:
     tag: v0.1.9
   envVars:
     - name: BACKUP_GLOBALREPOPASSWORD
-      value: {{ restic_password }}
+      value: {{ k8up_restic_password }}
     - name: BACKUP_GLOBALACCESSKEYID
-      value: {{ accesskey }}
+      value: {{ backup_minio_accesskey }}
     - name: BACKUP_GLOBALSECRETACCESSKEY
-      value: {{ secretkey }}
+      value: {{ backup_minio_accesskey }}
     - name: BACKUP_GLOBALS3ENDPOINT
-      value: https://{{ minio_backup_hostname }}
+      value: https://{{ backup_minio_hostname }}
     - name: BACKUP_GLOBALKEEPJOBS
       value: "{{ k8up_keep_jobs }}"
     - name: BACKUP_PROMURL

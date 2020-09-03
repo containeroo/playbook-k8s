@@ -79,21 +79,4 @@ grafana:
   serviceMonitor:
     selfMonitor: false
   defaultDashboardsEnabled: false
-  enabled: true
-  persistence:
-    enabled: true
-    storageClassName: {{ grafana_storageclass }}
-  env:
-    GF_SERVER_ROOT_URL: https://{{ grafana_hostname }}
-{% if grafana_sso_enabled %}
-    GF_AUTH_GENERIC_OAUTH_NAME: {{ grafana_sso_name }}
-    GF_AUTH_GENERIC_OAUTH_ENABLED: true
-    GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP: true
-    GF_AUTH_GENERIC_OAUTH_CLIENT_ID: {{ grafana_sso_client_id }}
-    GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: {{ grafana_sso_client_secret }}
-    GF_AUTH_GENERIC_OAUTH_SCOPES: openid profile email
-    GF_AUTH_GENERIC_OAUTH_AUTH_URL: {{ grafana_sso_idp_url }}/auth
-    GF_AUTH_GENERIC_OAUTH_TOKEN_URL: {{ grafana_sso_idp_url }}/token
-    GF_AUTH_BASIC_ENABLED: false
-    GF_AUTH_DISABLE_LOGIN_FORM: true
-{% endif %}
+  enabled: false

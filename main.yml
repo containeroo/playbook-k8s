@@ -72,9 +72,9 @@
     - import_tasks: tasks/kubernetes-dashboard.yml
       tags:
         - kubernetes-dashboard
-    - import_tasks: tasks/minio-backup.yml
+    - import_tasks: tasks/backup-minio.yml
       tags:
-        - minio-backup
+        - backup-minio
     - import_tasks: tasks/prometheus-operator.yml
       tags:
         - prometheus-operator

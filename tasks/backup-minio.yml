@@ -1,0 +1,26 @@
+---
+- name: Create backup-minio credentials secret
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'backup-minio/backup-minio-credentials-secret.yaml') }}"
+
+- name: Install helm chart backup-minio
+  helm:
+    name: backup-minio
+    chart_ref: minio/minio
+    chart_version: 6.0.5
+    release_namespace: "{{ backup_minio_namespace }}"
+    values: "{{ lookup('template', 'backup-minio/backup-minio-values.yaml') | from_yaml }}"
+
+- name: Create backup-minio ingressroute
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
+  with_items:
+    - name: backup-minio
+      namespace: "{{ backup_minio_namespace }}"
+      routes:
+        - rule: Host(`{{ backup_minio_hostname }}`)
+          services:
+            - name: backup-minio
+              port: 9000

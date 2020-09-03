@@ -1,0 +1,11 @@
+existingSecret: backup-minio-credentials
+persistence:
+  storageClass: backup
+{% if backup_minio_buckets is not none %}
+buckets:
+{% for bucket in backup_minio_buckets %}
+  - name: {{ bucket }}
+    policy: none
+    purge: false
+{% endfor %}
+{% endif %}

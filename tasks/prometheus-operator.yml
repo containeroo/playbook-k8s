@@ -31,13 +31,6 @@
           services:
             - name: prometheus-operator-alertmanager
               port: 9093
-    - name: grafana
-      namespace: "{{ prometheus_operator_namespace }}"
-      routes:
-        - rule: Host(`{{ grafana_hostname }}`)
-          services:
-            - name: prometheus-operator-grafana
-              port: 80
     - name: prometheus
       namespace: "{{ prometheus_operator_namespace }}"
       routes:
