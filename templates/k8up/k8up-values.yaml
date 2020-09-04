@@ -7,7 +7,7 @@ k8up:
     - name: BACKUP_GLOBALACCESSKEYID
       value: {{ backup_minio_accesskey }}
     - name: BACKUP_GLOBALSECRETACCESSKEY
-      value: {{ backup_minio_accesskey }}
+      value: {{ backup_minio_secretkey }}
     - name: BACKUP_GLOBALS3ENDPOINT
       value: https://{{ backup_minio_hostname }}
     - name: BACKUP_GLOBALKEEPJOBS
