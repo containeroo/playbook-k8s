@@ -4,3 +4,7 @@ configInline:
       protocol: layer2
       addresses:
         - {{ metallb_address_pool }}
+speaker:
+  extraEnvVars:
+    - name: TZ
+      value: {{ timezone }}

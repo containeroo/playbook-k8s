@@ -40,6 +40,7 @@ global:
         - secret: gitlab-saml-sso
 {% endif %}
   edition: ce
+  time_zone: {{ timezone }}
 {% if gitlab_mail_enabled %}
   email:
     display_name: GitLab@{{ base_domain }}

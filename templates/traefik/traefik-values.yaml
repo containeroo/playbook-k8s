@@ -24,6 +24,8 @@ ports:
     protocol: TCP
 {% endif %}
 env:
+  - name: TZ
+    value: {{ timezone }}
   - name: CF_API_EMAIL
     valueFrom:
       secretKeyRef:

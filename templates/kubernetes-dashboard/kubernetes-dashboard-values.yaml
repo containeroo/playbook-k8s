@@ -1,2 +1,5 @@
 metricsScraper:
   enabled: true
+extraEnv:
+  - name: TZ
+    value: {{ timezone }}

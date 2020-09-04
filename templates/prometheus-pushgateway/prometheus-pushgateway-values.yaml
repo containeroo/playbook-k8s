@@ -6,3 +6,6 @@ serviceMonitor:
 persistentVolume:
   enabled: true
   storageClass: {{ prometheus_pushgateway_storageclass }}
+extraVars:
+  - name: TZ
+    value: {{ timezone }}

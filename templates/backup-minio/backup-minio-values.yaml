@@ -9,3 +9,5 @@ buckets:
     purge: false
 {% endfor %}
 {% endif %}
+environment:
+  TZ: {{ timezone }}
