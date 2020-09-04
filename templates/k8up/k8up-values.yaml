@@ -1,7 +1,7 @@
 k8up:
   backupImage:
     tag: v0.1.9
-  timezone: {{ k8up_timezone }}
+  timezone: {{ timezone }}
   envVars:
     - name: BACKUP_GLOBALREPOPASSWORD
       value: {{ k8up_restic_password }}
@@ -10,11 +10,11 @@ k8up:
     - name: BACKUP_GLOBALSECRETACCESSKEY
       value: {{ backup_minio_secretkey }}
     - name: BACKUP_GLOBALS3ENDPOINT
-      value: https://{{ backup_minio_hostname }}
+      value: http://backup-minio.{{ backup_minio_namespace }}.svc.cluster.local:9000
     - name: BACKUP_GLOBALKEEPJOBS
       value: "{{ k8up_keep_jobs }}"
     - name: BACKUP_PROMURL
-      value: https://{{ prometheus_pushgateway_hostname }}
+      value: http://prometheus-pushgateway.{{ prometheus_pushgateway_namespace }}.svc.cluster.local:9091
 metrics:
   serviceMonitor:
     enabled: true

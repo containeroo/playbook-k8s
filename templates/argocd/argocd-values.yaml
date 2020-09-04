@@ -1,4 +1,7 @@
 controller:
+  env:
+    - name: TZ
+      value: {{ timezone }}
   metrics:
     enabled: true
     serviceMonitor:
@@ -50,6 +53,9 @@ controller:
       additionalLabels:
         prometheus: default
 server:
+  env:
+    - name: TZ
+      value: {{ timezone }}
   config:
 {% if argocd_sso_enabled %}
     admin.enabled: "false"
@@ -85,3 +91,15 @@ configs:
     extra:
       repoPassword: {{ argocd_repo_password }}
       repoUsername: {{ argocd_repo_username }}
+dex:
+  env:
+    - name: TZ
+      value: {{ timezone }}
+redis:
+  env:
+    - name: TZ
+      value: {{ timezone }}
+repoServer:
+  env:
+    - name: TZ
+      value: {{ timezone }}
