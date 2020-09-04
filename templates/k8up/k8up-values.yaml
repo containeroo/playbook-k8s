@@ -1,6 +1,7 @@
 k8up:
   backupImage:
     tag: v0.1.9
+  timezone: {{ k8up_timezone }}
   envVars:
     - name: BACKUP_GLOBALREPOPASSWORD
       value: {{ k8up_restic_password }}

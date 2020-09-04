@@ -101,6 +101,7 @@ kubedb_namespace: kubedb
 
 # k8up
 k8up_namespace: k8up
+k8up_timezone: Europe/Zurich
 k8up_keep_jobs: 1
 cluster_resources_backup_schedule: "0 */12 * * *"
 cluster_resources_backup_check_schedule: "30 3 * * *"
