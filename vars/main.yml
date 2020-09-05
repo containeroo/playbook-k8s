@@ -12,7 +12,6 @@ metallb_address_pool: 192.168.1.210-192.168.1.220
 
 # local-path-provisioner
 local_path_provisioner_namespace: local-path-provisioner
-local_path_provisioner_version: v0.0.17
 local_path_provisioner_data_paths:
   - name: nvme
     path: /mnt/disk04/data
@@ -53,6 +52,7 @@ traefik_routers:
     rule: "Host(`pihole.local.{{ base_domain }}`)"
     middlewares:
       - addprefix-pihole@file
+      - allow-lan-only@file
     service: pihole
 traefik_middlewares:
   - name: headers-default
@@ -66,6 +66,12 @@ traefik_middlewares:
         stsPreload: true
         stsSeconds: 15552000
         customFrameOptionsValue: SAMEORIGIN
+  - name: allow-lan-only
+    spec: >-
+      ipWhiteList:
+        sourceRange:
+          - 192.168.1.0/24
+          - 10.42.0.0/24
   - name: addprefix-pihole
     spec: >-
       addPrefix:

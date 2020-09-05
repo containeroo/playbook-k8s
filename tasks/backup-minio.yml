@@ -21,6 +21,8 @@
       namespace: "{{ backup_minio_namespace }}"
       routes:
         - rule: Host(`{{ backup_minio_hostname }}`)
+          middlewares:
+            - name: allow-lan-only@file
           services:
             - name: backup-minio
               port: 9000

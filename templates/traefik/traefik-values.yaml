@@ -48,3 +48,6 @@ volumes:
   - mountPath: /data
     name: traefik-config
     type: configMap
+service:
+  spec:
+    externalTrafficPolicy: Local

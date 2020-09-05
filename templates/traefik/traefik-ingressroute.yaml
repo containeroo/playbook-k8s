@@ -14,7 +14,9 @@ spec:
       middlewares:
 {% for middleware in route.middlewares %}
         - name: {{ middleware.name }}
-          namespace: {{ middleware.namespace | default(omit) }}
+{% if middleware.namespace is defined %}
+          namespace: {{ middleware.namespace }}
+{% endif %}
 {% endfor %}
 {% endif %}
       services:

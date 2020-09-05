@@ -9,6 +9,8 @@ spec:
   routes:
   - match: Host(`{{ traefik_dashboard_hostname }}`)
     kind: Rule
+    middlewares:
+      - name: allow-lan-only@file
     services:
     - name: api@internal
       kind: TraefikService

@@ -2,8 +2,8 @@
 - name: Install helm chart prometheus-pushgateway
   helm:
     name: prometheus-pushgateway
-    chart_ref: stable/prometheus-pushgateway
-    chart_version: 1.4.1
+    chart_ref: prometheus-community/prometheus-pushgateway
+    chart_version: 1.4.2
     release_namespace: "{{ prometheus_pushgateway_namespace }}"
     values: "{{ lookup('template', 'prometheus-pushgateway/prometheus-pushgateway-values.yaml') | from_yaml }}"
 
@@ -16,6 +16,8 @@
       namespace: "{{ prometheus_pushgateway_namespace }}"
       routes:
         - rule: Host(`{{ prometheus_pushgateway_hostname }}`)
+          middlewares:
+            - name: allow-lan-only@file
           services:
             - name: prometheus-pushgateway
               port: 9091

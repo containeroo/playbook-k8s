@@ -39,6 +39,10 @@
           url: https://kubernetes-charts.storage.googleapis.com
         - name: traefik
           url: https://containous.github.io/traefik-helm-chart
+        - name: prometheus-community
+          url: https://prometheus-community.github.io/helm-charts
+        - name: containeroo
+          url: https://charts.containeroo.ch
       tags:
         - always
     - name: Update all Helm repositories

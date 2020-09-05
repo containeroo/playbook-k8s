@@ -28,6 +28,7 @@
           middlewares:
             - name: forward-auth
               namespace: "{{ traefik_namespace }}"
+            - name: allow-lan-only@file
           services:
             - name: prometheus-operator-alertmanager
               port: 9093
@@ -38,6 +39,7 @@
           middlewares:
             - name: forward-auth
               namespace: "{{ traefik_namespace }}"
+            - name: allow-lan-only@file
           services:
             - name: prometheus-operator-prometheus
               port: 9090
