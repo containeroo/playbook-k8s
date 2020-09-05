@@ -39,6 +39,8 @@
       namespace: "{{ gitlab_namespace }}"
       routes:
         - rule: Host(`{{ gitlab_minio_hostname }}`)
+          middlewares:
+            - name: allow-lan-only@file
           services:
             - name: gitlab-minio-svc
               port: 9000
