@@ -3,6 +3,6 @@
   helm:
     name: metallb
     chart_ref: bitnami/metallb
-    chart_version: 0.1.21
+    chart_version: 0.1.23
     release_namespace: "{{ metallb_namespace }}"
     values: "{{ lookup('template', 'metallb/metallb-values.yaml') | from_yaml }}"

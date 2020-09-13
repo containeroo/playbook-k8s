@@ -2,11 +2,13 @@ controller:
   env:
     - name: TZ
       value: {{ timezone }}
+    - name: ARGOCD_GPG_ENABLED
+      value: "false"
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
-      namespace: {{ prometheus_operator_namespace }}
+      namespace: {{ kube_prometheus_stack_namespace }}
       additionalLabels:
         prometheus: default
     rules:
@@ -49,13 +51,15 @@ controller:
             description: >
               The application `{{ $labels.name }}` is not healthy.
 {% endraw %}
-      namespace: {{ prometheus_operator_namespace }}
+      namespace: {{ kube_prometheus_stack_namespace }}
       additionalLabels:
         prometheus: default
 server:
   env:
     - name: TZ
       value: {{ timezone }}
+    - name: ARGOCD_GPG_ENABLED
+      value: "false"
   config:
 {% if argocd_sso_enabled %}
     admin.enabled: "false"
@@ -69,14 +73,16 @@ server:
     admin.enabled: "true"
 {% endif %}
     repositories: |
+{% for repo in argocd_repos %}
         - passwordSecret:
-            key: repoPassword
+            key: {{ repo.name }}Password
             name: argocd-secret
           type: git
-          url: {{ argocd_repo_url }}
+          url: {{ repo.url }}
           usernameSecret:
-            key: repoUsername
+            key: {{ repo.name }}Username
             name: argocd-secret
+{% endfor %}
     url: https://{{ argocd_hostname }}
 {% if argocd_extraArgs is not none %}
   extraArgs:
@@ -89,8 +95,10 @@ server:
 configs:
   secret:
     extra:
-      repoPassword: {{ argocd_repo_password }}
-      repoUsername: {{ argocd_repo_username }}
+{% for repo in argocd_repos %}
+      {{ repo.name }}Password: {{ repo.password }}
+      {{ repo.name }}Username: {{ repo.username }}
+{% endfor %}
 dex:
   env:
     - name: TZ
@@ -103,3 +111,5 @@ repoServer:
   env:
     - name: TZ
       value: {{ timezone }}
+    - name: ARGOCD_GPG_ENABLED
+      value: "false"

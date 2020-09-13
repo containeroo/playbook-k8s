@@ -40,3 +40,8 @@
   k8s:
     state: present
     definition: "{{ lookup('template', 'k8up/cluster-resources-backup-prebackuppod.yaml') }}"
+
+- name: Ensure k8up namespace label exists
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'k8up/k8up-namespace.yaml') }}"

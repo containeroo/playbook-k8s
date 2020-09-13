@@ -3,7 +3,7 @@
   helm:
     name: kubernetes-dashboard
     chart_ref: kubernetes-dashboard/kubernetes-dashboard
-    chart_version: 2.3.0
+    chart_version: 2.6.0
     release_namespace: "{{ kubernetes_dashboard_namespace }}"
     values: "{{ lookup('template', 'kubernetes-dashboard/kubernetes-dashboard-values.yaml') | from_yaml }}"
 

@@ -38,7 +38,7 @@ cf_api_key: # API Key for Cloudflare
 # backup minio
 backup_minio_secretkey: # Minio secret key
 
-# prometheus-operator
+# kube-prometheus-stack
 slack_url: https://hooks.slack.com/services/ # Slack url for alertmanager notifications
 
 # gitlab

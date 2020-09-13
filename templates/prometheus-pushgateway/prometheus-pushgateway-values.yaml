@@ -1,11 +1,8 @@
 serviceMonitor:
   enabled: true
-  namespace: {{ prometheus_operator_namespace }}
+  namespace: {{ kube_prometheus_stack_namespace }}
   additionalLabels:
     prometheus: default
-persistentVolume:
-  enabled: true
-  storageClass: {{ prometheus_pushgateway_storageclass }}
 extraVars:
   - name: TZ
     value: {{ timezone }}

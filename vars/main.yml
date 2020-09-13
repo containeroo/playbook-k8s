@@ -91,17 +91,15 @@ backup_minio_hostname: backups.local.{{ base_domain }}
 backup_minio_accesskey: admin
 backup_minio_buckets:
 
-# prometheus-operator
-prometheus_operator_namespace: monitoring
+# kube-prometheus-stack
+kube_prometheus_stack_namespace: monitoring
 alertmanager_hostname: alertmanager.local.{{ base_domain }}
 slack_channel: "#kubernetes"
 prometheus_hostname: prometheus.local.{{ base_domain }}
-prometheus_storageclass: nvme
 
 # prometheus-pushgateway
 prometheus_pushgateway_namespace: monitoring
 prometheus_pushgateway_hostname: pushgateway.local.{{ base_domain }}
-prometheus_pushgateway_storageclass: nvme
 
 # kubedb
 kubedb_namespace: kubedb
@@ -139,8 +137,15 @@ argocd_namespace: argocd
 argocd_hostname: argocd.{{ base_domain }}
 argocd_extraArgs:
   - --insecure
-argocd_repo_url: https://{{ gitlab_hostname }}/kubernetes/deployments.git
-argocd_repo_username: gitlab+deploy-token-2
+argocd_repos:
+  - url: https://{{ gitlab_hostname }}/kubernetes/deployments.git
+    name: deployments
+    username: gitlab+deploy-token-2
+    password: "{{ argocd_deployments_repo_password }}"
+  - url: https://{{ gitlab_hostname }}/kubernetes/networkpolicies.git
+    name: networkpolicies
+    username: gitlab+deploy-token-6
+    password: "{{ argocd_networkpolicies_repo_password }}"
 argocd_sso_enabled: true
 argocd_sso_name: example.com SSO
 argocd_sso_idp_url: https://{{ keycloak_hostname }}/auth/realms/{{ keycloak_realm }}

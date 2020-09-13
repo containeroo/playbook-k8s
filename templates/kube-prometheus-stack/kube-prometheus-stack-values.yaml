@@ -55,15 +55,6 @@ prometheus:
   serviceMonitor:
     selfMonitor: false
   prometheusSpec:
-    storageSpec:
-     volumeClaimTemplate:
-       spec:
-         storageClassName: {{ prometheus_storageclass }}
-         accessModes:
-           - "ReadWriteOnce"
-         resources:
-           requests:
-             storage: 50Gi
     ruleSelectorNilUsesHelmValues: false
     ruleSelector:
       matchLabels:

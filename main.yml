@@ -79,9 +79,9 @@
     - import_tasks: tasks/backup-minio.yml
       tags:
         - backup-minio
-    - import_tasks: tasks/prometheus-operator.yml
+    - import_tasks: tasks/kube-prometheus-stack.yml
       tags:
-        - prometheus-operator
+        - kube-prometheus-stack
     - import_tasks: tasks/prometheus-pushgateway.yml
       tags:
         - prometheus-pushgateway

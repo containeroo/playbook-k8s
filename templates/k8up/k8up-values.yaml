@@ -18,11 +18,11 @@ k8up:
 metrics:
   serviceMonitor:
     enabled: true
-    namespace: {{ prometheus_operator_namespace }}
+    namespace: {{ kube_prometheus_stack_namespace }}
     additionalLabels:
       prometheus: default
   prometheusRule:
     enabled: true
-    namespace: {{ prometheus_operator_namespace }}
+    namespace: {{ kube_prometheus_stack_namespace }}
     additionalLabels:
       prometheus: default
