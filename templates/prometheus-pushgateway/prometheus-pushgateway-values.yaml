@@ -1,6 +1,6 @@
 serviceMonitor:
   enabled: true
-  namespace: {{ kube_prometheus_stack_namespace }}
+  namespace: {{ prometheus_pushgateway_namespace }}
   additionalLabels:
     prometheus: default
 extraVars:
