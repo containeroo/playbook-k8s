@@ -7,5 +7,7 @@ runners:
   locked: false
   runUntagged: true
   protected: false
+  podLabels:
+    gitlab-runner: ci-job
 rbac:
   create: true
