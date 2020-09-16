@@ -89,3 +89,9 @@ registry:
 minio:
   ingress:
     enabled: false
+postgresql:
+  metrics:
+    enabled: false
+redis:
+  metrics:
+    enabled: false
