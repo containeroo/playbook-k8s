@@ -9,6 +9,20 @@ configmap:
   name: {{ item.name }}-local-path-provisioner
   teardown: |-
     #!/bin/sh
-    path=$1
-    archived_path="$(dirname ${path})/archived-$(basename ${path})"
-    mv ${path} ${archived_path}
+    while getopts "m:s:p:" opt
+    do
+      case $opt in
+        p)
+        absolutePath=$OPTARG
+        ;;
+        s)
+        sizeInBytes=$OPTARG
+        ;;
+        m)
+        volMode=$OPTARG
+        ;;
+        esac
+    done
+
+    archived_path="$(dirname ${absolutePath})/archived-$(basename ${absolutePath})"
+    mv ${absolutePath} ${archived_path}
