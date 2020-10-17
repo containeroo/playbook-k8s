@@ -6,3 +6,10 @@ serviceMonitor:
 extraVars:
   - name: TZ
     value: {{ timezone }}
+ingress:
+  enabled: true
+  hosts:
+    - {{ prometheus_pushgateway_hostname }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: allow-lan-only@file

@@ -11,18 +11,3 @@
     chart_version: 7.2.1
     release_namespace: "{{ minio_namespace }}"
     values: "{{ lookup('template', 'minio/minio-values.yaml') | from_yaml }}"
-
-- name: Create minio ingressroute
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
-  with_items:
-    - name: minio
-      namespace: "{{ minio_namespace }}"
-      routes:
-        - rule: Host(`{{ minio_hostname }}`)
-          middlewares:
-            - name: allow-lan-only@file
-          services:
-            - name: minio
-              port: 9000

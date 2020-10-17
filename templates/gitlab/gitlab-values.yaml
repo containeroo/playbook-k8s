@@ -20,8 +20,6 @@ gitlab:
         schedule: {{ gitlab_backup_schedule }}
 {% endif %}
   webservice:
-    ingress:
-      enabled: false
     maxReplicas: 1
     minReplicas: 1
 gitlab-runner:
@@ -60,7 +58,10 @@ global:
       name: {{ gitlab_registry_hostname }}
   ingress:
     configureCertmanager: false
-    enabled: false
+    enabled: true
+    class: null
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
     tls:
       enabled: false
 {% if gitlab_mail_enabled %}
@@ -81,14 +82,13 @@ nginx-ingress:
 prometheus:
   install: false
 registry:
-  ingress:
-    enabled: false
   hpa:
     maxReplicas: 1
     minReplicas: 1
 minio:
   ingress:
-    enabled: false
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: allow-lan-only@file
 postgresql:
   metrics:
     enabled: false

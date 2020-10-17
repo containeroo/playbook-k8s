@@ -55,6 +55,12 @@ controller:
       additionalLabels:
         prometheus: default
 server:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    hosts:
+      - {{ argocd_hostname }}
   env:
     - name: TZ
       value: {{ timezone }}

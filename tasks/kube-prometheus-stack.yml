@@ -15,31 +15,3 @@
   delay: 10
   changed_when: false
   become: true
-
-- name: Create kube-prometheus-stack ingressroutes
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
-  with_items:
-    - name: alertmanager
-      namespace: "{{ kube_prometheus_stack_namespace }}"
-      routes:
-        - rule: Host(`{{ alertmanager_hostname }}`)
-          middlewares:
-            - name: forward-auth
-              namespace: "{{ traefik_namespace }}"
-            - name: allow-lan-only@file
-          services:
-            - name: kube-prometheus-stack-alertmanager
-              port: 9093
-    - name: prometheus
-      namespace: "{{ kube_prometheus_stack_namespace }}"
-      routes:
-        - rule: Host(`{{ prometheus_hostname }}`)
-          middlewares:
-            - name: forward-auth
-              namespace: "{{ traefik_namespace }}"
-            - name: allow-lan-only@file
-          services:
-            - name: kube-prometheus-stack-prometheus
-              port: 9090

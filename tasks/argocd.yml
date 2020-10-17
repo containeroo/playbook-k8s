@@ -15,16 +15,3 @@
   delay: 10
   changed_when: false
   become: true
-
-- name: Create argocd ingressroute
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
-  with_items:
-    - name: argocd-server
-      namespace: "{{ argocd_namespace }}"
-      routes:
-        - rule: Host(`{{ argocd_hostname }}`)
-          services:
-            - name: argocd-server
-              port: 80

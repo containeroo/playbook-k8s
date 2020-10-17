@@ -35,6 +35,7 @@ cert_sans: "*.{{ base_domain }},*.local.{{ base_domain }},*.srv.{{ base_domain }
 acme_email: "{{ mail_address }}"
 additional_arguments:
   - --serverstransport.insecureskipverify
+  - --providers.kubernetesingress.ingressendpoint.ip=192.168.1.210
   - --providers.file.filename=/data/traefik-config.yaml
   - --entrypoints.websecure.http.tls.certresolver=cloudflare
   - --entrypoints.websecure.http.tls.domains[0].main={{ cert_domain }}

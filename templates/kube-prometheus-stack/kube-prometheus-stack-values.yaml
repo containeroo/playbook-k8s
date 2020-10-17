@@ -1,4 +1,11 @@
 alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.middlewares: allow-lan-only@file,traefik-forward-auth@kubernetescrd
+    hosts:
+      - {{ alertmanager_hostname }}
   config:
     global:
       resolve_timeout: 15m
@@ -52,6 +59,13 @@ kubelet:
 nodeExporter:
   enabled: false
 prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.middlewares: allow-lan-only@file,traefik-forward-auth@kubernetescrd
+    hosts:
+      - {{ prometheus_hostname }}
   serviceMonitor:
     selfMonitor: false
   prometheusSpec:
@@ -67,7 +81,4 @@ prometheusOperator:
   serviceMonitor:
     selfMonitor: false
 grafana:
-  serviceMonitor:
-    selfMonitor: false
-  defaultDashboardsEnabled: false
   enabled: false

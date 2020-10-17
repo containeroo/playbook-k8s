@@ -11,3 +11,10 @@ buckets:
 {% endif %}
 environment:
   TZ: {{ timezone }}
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: allow-lan-only@file
+  hosts:
+    - {{ minio_hostname }}

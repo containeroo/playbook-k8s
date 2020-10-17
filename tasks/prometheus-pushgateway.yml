@@ -6,18 +6,3 @@
     chart_version: 1.4.2
     release_namespace: "{{ prometheus_pushgateway_namespace }}"
     values: "{{ lookup('template', 'prometheus-pushgateway/prometheus-pushgateway-values.yaml') | from_yaml }}"
-
-- name: Create prometheus-pushgateway ingressroute
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
-  with_items:
-    - name: prometheus-pushgateway
-      namespace: "{{ prometheus_pushgateway_namespace }}"
-      routes:
-        - rule: Host(`{{ prometheus_pushgateway_hostname }}`)
-          middlewares:
-            - name: allow-lan-only@file
-          services:
-            - name: prometheus-pushgateway
-              port: 9091

@@ -19,39 +19,6 @@
     release_namespace: "{{ gitlab_namespace }}"
     values: "{{ lookup('template', 'gitlab/gitlab-values.yaml') | from_yaml }}"
 
-- name: Create gitlab ingressroutes
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
-  with_items:
-    - name: gitlab-webservice
-      namespace: "{{ gitlab_namespace }}"
-      routes:
-        - rule: Host(`{{ gitlab_hostname }}`)
-          services:
-            - name: gitlab-webservice
-              port: 8181
-        - rule: Host(`{{ gitlab_hostname }}`) && Path(`/admin/sidekiq`)
-          services:
-            - name: gitlab-webservice
-              port: 8080
-    - name: gitlab-minio
-      namespace: "{{ gitlab_namespace }}"
-      routes:
-        - rule: Host(`{{ gitlab_minio_hostname }}`)
-          middlewares:
-            - name: allow-lan-only@file
-          services:
-            - name: gitlab-minio-svc
-              port: 9000
-    - name: gitlab-registry
-      namespace: "{{ gitlab_namespace }}"
-      routes:
-        - rule: Host(`{{ gitlab_registry_hostname }}`)
-          services:
-            - name: gitlab-registry
-              port: 5000
-
 - name: Ensure gitlab ssh ingressroutetcp is {{ 'present' if gitlab_ssh_enabled else 'absent' }}
   k8s:
     state: "{{ 'present' if gitlab_ssh_enabled else 'absent' }}"

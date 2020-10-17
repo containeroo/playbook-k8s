@@ -7,21 +7,6 @@
     release_namespace: "{{ kubernetes_dashboard_namespace }}"
     values: "{{ lookup('template', 'kubernetes-dashboard/kubernetes-dashboard-values.yaml') | from_yaml }}"
 
-- name: Create kubernetes-dashboard ingressroute
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'traefik/traefik-ingressroute.yaml') }}"
-  with_items:
-    - name: kubernetes-dashboard
-      namespace: "{{ kubernetes_dashboard_namespace }}"
-      routes:
-        - rule: Host(`{{ kubernetes_dashboard_hostname }}`)
-          middlewares:
-            - name: allow-lan-only@file
-          services:
-            - name: kubernetes-dashboard
-              port: 443
-
 - name: Create kubernetes-dashboard serviceaccount
   k8s:
     state: present

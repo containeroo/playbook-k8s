@@ -12,3 +12,10 @@ pinnedCRDs:
 extraEnv:
   - name: TZ
     value: {{ timezone }}
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: allow-lan-only@file
+  hosts:
+    - {{ kubernetes_dashboard_hostname }}
