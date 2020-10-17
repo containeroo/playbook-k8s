@@ -71,7 +71,7 @@ traefik_middlewares:
       ipWhiteList:
         sourceRange:
           - 192.168.1.0/24
-          - 10.42.0.0/24
+          - 172.16.230.64/26
   - name: addprefix-pihole
     spec: >-
       addPrefix:
@@ -84,12 +84,16 @@ traefik_services:
 # kubernetes-dashboard
 kubernetes_dashboard_namespace: kubernetes-dashboard
 kubernetes_dashboard_hostname: dash.local.{{ base_domain }}
+kubernetes_dashboard_pinned_crds:
+  - name: ingressroutes.traefik.containo.us
+    displayName: IngressRoute
+    namespaced: true
 
-# backup-minio
-backup_minio_namespace: backup-minio
-backup_minio_hostname: backups.local.{{ base_domain }}
-backup_minio_accesskey: admin
-backup_minio_buckets:
+# minio
+minio_namespace: minio
+minio_hostname: backups.local.{{ base_domain }}
+minio_accesskey: admin
+minio_buckets:
 
 # kube-prometheus-stack
 kube_prometheus_stack_namespace: monitoring

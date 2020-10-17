@@ -38,7 +38,7 @@
         - name: stable
           url: https://kubernetes-charts.storage.googleapis.com
         - name: traefik
-          url: https://containous.github.io/traefik-helm-chart
+          url: https://helm.traefik.io/traefik
         - name: prometheus-community
           url: https://prometheus-community.github.io/helm-charts
         - name: containeroo
@@ -76,9 +76,9 @@
     - import_tasks: tasks/kubernetes-dashboard.yml
       tags:
         - kubernetes-dashboard
-    - import_tasks: tasks/backup-minio.yml
+    - import_tasks: tasks/minio.yml
       tags:
-        - backup-minio
+        - minio
     - import_tasks: tasks/kube-prometheus-stack.yml
       tags:
         - kube-prometheus-stack

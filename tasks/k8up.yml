@@ -3,7 +3,7 @@
   helm:
     name: k8up
     chart_ref: appuio/k8up
-    chart_version: 0.6.1
+    chart_version: 0.6.2
     release_namespace: "{{ k8up_namespace }}"
     values: "{{ lookup('template', 'k8up/k8up-values.yaml') | from_yaml }}"
 

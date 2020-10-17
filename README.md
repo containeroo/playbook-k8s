@@ -33,10 +33,11 @@ ansible-vault decrypt vars/secrets.yml
 ```yaml
 ---
 # traefik
+traefik_pilot_token: # Token from pilot.traefik.io
 cf_api_key: # API Key for Cloudflare
 
-# backup minio
-backup_minio_secretkey: # Minio secret key
+# minio
+minio_secretkey: # Minio secret key
 
 # kube-prometheus-stack
 slack_url: https://hooks.slack.com/services/ # Slack url for alertmanager notifications

@@ -5,6 +5,54 @@ Kubernetes Collection Release Notes
 .. contents:: Topics
 
 
+v1.1.1
+======
+
+Bugfixes
+--------
+
+- k8s - Fix sanity test 'compile' failing because of positional args (https://github.com/ansible-collections/community.kubernetes/issues/260).
+
+v1.1.0
+======
+
+Major Changes
+-------------
+
+- k8s - Add support for template parameter (https://github.com/ansible-collections/community.kubernetes/pull/230).
+- k8s_* - Add support for vaulted kubeconfig and src (https://github.com/ansible-collections/community.kubernetes/pull/193).
+
+Minor Changes
+-------------
+
+- Add Makefile and downstream build script for kubernetes.core (https://github.com/ansible-collections/community.kubernetes/pull/197).
+- Add execution environment metadata (https://github.com/ansible-collections/community.kubernetes/pull/211).
+- Add probot stale bot configuration to autoclose issues (https://github.com/ansible-collections/community.kubernetes/pull/196).
+- Added a contribution guide (https://github.com/ansible-collections/community.kubernetes/pull/192).
+- Refactor module_utils (https://github.com/ansible-collections/community.kubernetes/pull/223).
+- Replace KubernetesAnsibleModule class with dummy class (https://github.com/ansible-collections/community.kubernetes/pull/227).
+- Replace KubernetesRawModule class with K8sAnsibleMixin (https://github.com/ansible-collections/community.kubernetes/pull/231).
+- common - Do not mark task as changed when diff is irrelevant (https://github.com/ansible-collections/community.kubernetes/pull/228).
+- helm - Add appVersion idempotence check to Helm (https://github.com/ansible-collections/community.kubernetes/pull/246).
+- helm - Return status in check mode (https://github.com/ansible-collections/community.kubernetes/pull/192).
+- helm - Support for single or multiple values files (https://github.com/ansible-collections/community.kubernetes/pull/93).
+- helm_* - Support vaulted kubeconfig (https://github.com/ansible-collections/community.kubernetes/pull/229).
+- k8s - SelfSubjectAccessReviews supported when 405 response received (https://github.com/ansible-collections/community.kubernetes/pull/237).
+- k8s - add testcase for adding multiple resources using template parameter (https://github.com/ansible-collections/community.kubernetes/issues/243).
+- k8s_info - Add support for wait (https://github.com/ansible-collections/community.kubernetes/pull/235).
+- k8s_info - update custom resource example (https://github.com/ansible-collections/community.kubernetes/issues/202).
+- kubectl plugin - correct console log (https://github.com/ansible-collections/community.kubernetes/issues/200).
+- raw - Handle exception raised by underlying APIs (https://github.com/ansible-collections/community.kubernetes/pull/180).
+
+Bugfixes
+--------
+
+- common - handle exception raised due to DynamicClient (https://github.com/ansible-collections/community.kubernetes/pull/224).
+- helm - add replace parameter (https://github.com/ansible-collections/community.kubernetes/issues/106).
+- k8s (inventory) - Set the connection plugin and transport separately (https://github.com/ansible-collections/community.kubernetes/pull/208).
+- k8s (inventory) - Specify FQCN for k8s inventory plugin to fix use with Ansible 2.9 (https://github.com/ansible-collections/community.kubernetes/pull/250).
+- k8s_info - add wait functionality (https://github.com/ansible-collections/community.kubernetes/issues/18).
+
 v1.0.0
 ======
 

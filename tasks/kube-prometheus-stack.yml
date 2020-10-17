@@ -3,14 +3,14 @@
   helm:
     name: kube-prometheus-stack
     chart_ref: prometheus-community/kube-prometheus-stack
-    chart_version: 9.4.1
+    chart_version: 10.1.0
     release_namespace: "{{ kube_prometheus_stack_namespace }}"
     values: "{{ lookup('template', 'kube-prometheus-stack/kube-prometheus-stack-values.yaml') | from_yaml }}"
 
 - name: Ensure kube-prometheus-stack crds exist
   command: "kubectl get crd"
   register: kube_prometheus_stack_crds
-  until: "kube_prometheus_stack_crds.stdout | regex_findall('.*monitoring.coreos.com') | length == 6"
+  until: "kube_prometheus_stack_crds.stdout | regex_findall('.*monitoring.coreos.com') | length == 7"
   retries: 10
   delay: 10
   changed_when: false

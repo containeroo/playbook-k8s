@@ -12,7 +12,7 @@
   helm:
     name: "{{ item.name }}"
     chart_ref: containeroo/local-path-provisioner
-    chart_version: 0.0.17
+    chart_version: 0.0.18
     release_namespace: "{{ local_path_provisioner_namespace }}"
     values: "{{ lookup('template', 'local-path-provisioner/local-path-provisioner-values.yaml') | from_yaml }}"
   with_items: "{{ local_path_provisioner_data_paths }}"

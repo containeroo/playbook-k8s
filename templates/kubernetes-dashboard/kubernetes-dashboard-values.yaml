@@ -1,5 +1,14 @@
 metricsScraper:
   enabled: true
+{% if kubernetes_dashboard_pinned_crds %}
+pinnedCRDs:
+{% for pcrd in kubernetes_dashboard_pinned_crds %}
+  - kind: customresourcedefinition
+    name: {{ pcrd.name }}
+    displayName: {{ pcrd.displayName }}
+    namespaced: {{ pcrd.namespaced }}
+{% endfor %}
+{% endif %}
 extraEnv:
   - name: TZ
     value: {{ timezone }}

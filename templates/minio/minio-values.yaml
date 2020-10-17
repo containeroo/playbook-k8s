@@ -1,9 +1,9 @@
-existingSecret: backup-minio-credentials
+existingSecret: minio-credentials
 persistence:
   storageClass: backup
-{% if backup_minio_buckets is not none %}
+{% if minio_buckets is not none %}
 buckets:
-{% for bucket in backup_minio_buckets %}
+{% for bucket in minio_buckets %}
   - name: {{ bucket }}
     policy: none
     purge: false

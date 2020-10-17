@@ -51,3 +51,8 @@ volumes:
 service:
   spec:
     externalTrafficPolicy: Local
+{% if traefik_pilot_token %}
+pilot:
+  enabled: true
+  token: {{ traefik_pilot_token }}
+{% endif %}
